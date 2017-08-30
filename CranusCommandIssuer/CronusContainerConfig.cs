@@ -1,5 +1,6 @@
 ﻿using Cranus;
 using Cranus.Accounts.Events;
+using CranusCommandIssuer.Logging;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.Cluster.Config;
@@ -19,50 +20,43 @@ namespace CranusCommandIssuer
 {
     public static class CronusContainerConfig
     {
+        static ILog log = LogProvider.GetLogger(typeof(CronusContainerConfig));
+
         public static InMemoryPublisher<ICommand> Setup()
         {
-            var container = new Container(); //set up basic container
-            var serviceLocator = new ServiceLocator(container); //"Injector" of some sort
-            ICronusSettings settings = new CronusSettings(container);  //basically pass in the container
-            var factory = new DefaultHandlerFactory(x => serviceLocator.Resolve(x)); // ???? kind of understand this but not sure
-            settings.UseCluster(x => x.UseAggregateRootAtomicAction(y => y.WithInMemory())); // ????
+            var container = new Container();
+            var serviceLocator = new ServiceLocator(container);
+            ICronusSettings settings = new CronusSettings(container);
+            var factory = new DefaultHandlerFactory(x => serviceLocator.Resolve(x));
+            settings.UseCluster(x => x.UseAggregateRootAtomicAction(y => y.WithInMemory()));
 
             ((ICronusSettings)settings).Build();
 
-            var host = container.Resolve<CronusHost>(); // Don't really get what this is supposed to do 
+            var host = container.Resolve<CronusHost>();
             host.Start();
             var storage = new InMemoryEventStoreStorage();
             var store = new InMemoryEventStore(storage);
 
 
-            container.RegisterSingleton<InMemoryEventStoreStorage>(() => new InMemoryEventStoreStorage()); //make a single EventStore
+            container.RegisterSingleton<InMemoryEventStoreStorage>(() => new InMemoryEventStoreStorage());
 
-            var gg1 = serviceLocator.Resolve<GG>(); //simple example
-            gg1.CheckProperty();                    //if the ServiceLocator works properly then it should cw "GG"
-
-
-            //What does Middleware even mean
             var projectionsMiddleware = new ProjectionsMiddleware(factory);
             var eventHandlerSubscriptions = new SubscriptionMiddleware();
             foreach (var reg in typeof(DummyProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
             {
                 if (typeof(IProjection)
-                    .IsAssignableFrom(reg))eventHandlerSubscriptions
-                        .Subscribe(new HandleSubscriber<IProjection, IEventHandler<IEvent>>(reg, projectionsMiddleware));
+                    .IsAssignableFrom(reg)) eventHandlerSubscriptions
+                         .Subscribe(new HandleSubscriber<IProjection, IEventHandler<IEvent>>(reg, projectionsMiddleware));
             }
-
-
-
 
             var applicationServiceSubscriptions = new SubscriptionMiddleware();
             var applicationServiceMiddleware = new ApplicationServiceMiddleware(factory, new AggregateRepository(store, container.Resolve<IAggregateRootAtomicAction>(), container.Resolve<IIntegrityPolicy<EventStream>>()), new InMemoryPublisher<IEvent>(eventHandlerSubscriptions));
             foreach (var reg in typeof(Account).Assembly.GetTypes().Where(x => typeof(IAggregateRootApplicationService).IsAssignableFrom(x)))
             {
                 if (typeof(IAggregateRootApplicationService)
-                    .IsAssignableFrom(reg))applicationServiceSubscriptions
-                        .Subscribe(new HandleSubscriber<IAggregateRootApplicationService, ICommandHandler<ICommand>>(reg, applicationServiceMiddleware));
+                    .IsAssignableFrom(reg)) applicationServiceSubscriptions
+                         .Subscribe(new HandleSubscriber<IAggregateRootApplicationService, ICommandHandler<ICommand>>(reg, applicationServiceMiddleware));
             }
-
 
             InMemoryPublisher<ICommand> publisher = new InMemoryPublisher<ICommand>(applicationServiceSubscriptions);
 
@@ -74,7 +68,8 @@ namespace CranusCommandIssuer
         {
             public void Handle(AccountActivated @event)
             {
-                System.Diagnostics.Trace.WriteLine("pishem v bazata");
+                log.Debug("We are writing in the database");
+                System.Diagnostics.Trace.WriteLine("Implying we are saving in the base");
             }
         }
 
