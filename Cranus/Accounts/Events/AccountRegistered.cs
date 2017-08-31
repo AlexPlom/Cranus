@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Cranus.Accounts.Events
 {
     [DataContract(Name = "8e8a879e-4d05-45be-ac48-26476e870598")]
-    public class NewAccountRegistered : IEvent
+    public class AccountRegistered : IEvent
     {
         [DataMember(Order = 1)]
         public AccountId Id { get; private set; }
@@ -18,7 +18,7 @@ namespace Cranus.Accounts.Events
         [DataMember(Order = 4)]
         public string Email { get; private set; }
 
-        public NewAccountRegistered(AccountId id, string username, string password, string email)
+        public AccountRegistered(AccountId id, string username, string password, string email)
         {
             Id = id;
             Username = username;

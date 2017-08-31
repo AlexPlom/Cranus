@@ -15,8 +15,7 @@ namespace Cranus
             if (ReferenceEquals(null, email)) throw new ArgumentNullException(nameof(email));
             if (ReferenceEquals(null, password)) throw new ArgumentNullException(nameof(password));
 
-            state = new AccountState();
-            var evnt = new NewAccountRegistered(id, username, password, email);
+            var evnt = new AccountRegistered(id, username, password, email);
             Apply(evnt);
         }
 

@@ -11,14 +11,16 @@ namespace CranusCommandIssuer
             log4net.Config.XmlConfigurator.Configure();
             var publisher = CronusInMemoryConfig.Setup();
 
-            var accountId = new AccountId("a", "tenant");
+            var accountId = new AccountId("CranusAccount", "tenant");
             var reason = new Reason("A good reason title", "The reason for the modification.");
 
-            var registerAccount = new RegisterAccount(accountId, "username", "password", "email@gmail.com");
+            var registerAccount = new RegisterAccount(accountId, "username", "password", "cranus@gmail.com");
 
-            DeactivateАccount command = new DeactivateАccount(accountId, reason);
+            var deactivateAccount = new DeactivateАccount(accountId, reason);
+            var activatAccount = new ActivateAccount(accountId, reason);
             publisher.Publish(registerAccount, new Dictionary<string, string>());
-            publisher.Publish(command, new Dictionary<string, string>());
+            publisher.Publish(deactivateAccount, new Dictionary<string, string>());
+            publisher.Publish(activatAccount, new Dictionary<string, string>());
         }
     }
 }

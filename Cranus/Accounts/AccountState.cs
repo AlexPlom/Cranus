@@ -15,7 +15,7 @@ namespace Cranus.Accounts
 
         public bool IsSuspended { get; set; }
 
-        public void When(NewAccountRegistered e)
+        public void When(AccountRegistered e)
         {
             Id = e.Id;
             Email = e.Email;
