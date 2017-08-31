@@ -21,8 +21,21 @@ namespace Cranus.Accounts.Commands
         public Reason Reason { get; private set; }
     }
 
+    [DataContract(Name = "62da0bad-6f6c-44c7-8aff-8d179e61241a")]
     public class Reason : ValueObject<Reason>
     {
+        Reason() { }
 
+        public Reason(string title, string description)
+        {
+            Title = title;
+            Description = description;
+        }
+
+        [DataMember(Order = 1)]
+        public string Title { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Description { get; set; }
     }
 }

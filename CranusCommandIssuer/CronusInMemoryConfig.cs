@@ -18,15 +18,16 @@ using System.Reflection;
 
 namespace CranusCommandIssuer
 {
-    public static class CronusContainerConfig
+    public static class CronusInMemoryConfig
     {
-        static ILog log = LogProvider.GetLogger(typeof(CronusContainerConfig));
+        static ILog log = LogProvider.GetLogger(typeof(CronusInMemoryConfig));
 
         public static InMemoryPublisher<ICommand> Setup()
         {
             var container = new Container();
             var serviceLocator = new ServiceLocator(container);
             ICronusSettings settings = new CronusSettings(container);
+
             var factory = new DefaultHandlerFactory(x => serviceLocator.Resolve(x));
             settings.UseCluster(x => x.UseAggregateRootAtomicAction(y => y.WithInMemory()));
 
@@ -37,8 +38,7 @@ namespace CranusCommandIssuer
             var storage = new InMemoryEventStoreStorage();
             var store = new InMemoryEventStore(storage);
 
-
-            container.RegisterSingleton<InMemoryEventStoreStorage>(() => new InMemoryEventStoreStorage());
+            container.RegisterSingleton(() => new InMemoryEventStoreStorage());
 
             var projectionsMiddleware = new ProjectionsMiddleware(factory);
             var eventHandlerSubscriptions = new SubscriptionMiddleware();
