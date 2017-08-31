@@ -6,6 +6,16 @@ namespace Cranus.Accounts.Events
     [DataContract(Name = "8e8a879e-4d05-45be-ac48-26476e870598")]
     public class AccountRegistered : IEvent
     {
+        AccountRegistered() { }
+
+        public AccountRegistered(AccountId id, string username, string password, string email)
+        {
+            Id = id;
+            Username = username;
+            Password = password;
+            Email = email;
+        }
+
         [DataMember(Order = 1)]
         public AccountId Id { get; private set; }
 
@@ -18,12 +28,9 @@ namespace Cranus.Accounts.Events
         [DataMember(Order = 4)]
         public string Email { get; private set; }
 
-        public AccountRegistered(AccountId id, string username, string password, string email)
+        public override string ToString()
         {
-            Id = id;
-            Username = username;
-            Password = password;
-            Email = email;
+            return this.ToString($"New account created with email:'{Email}'. {Id}");
         }
     }
 }

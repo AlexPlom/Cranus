@@ -1,5 +1,6 @@
 ﻿using Cranus;
 using Cranus.Accounts.Events;
+using Cranus.Accounts.Projections;
 using CranusCommandIssuer.Logging;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Config;
@@ -42,7 +43,7 @@ namespace CranusCommandIssuer
 
             var projectionsMiddleware = new ProjectionsMiddleware(factory);
             var eventHandlerSubscriptions = new SubscriptionMiddleware();
-            foreach (var reg in typeof(DummyProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
+            foreach (var reg in typeof(AccountProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
             {
                 if (typeof(IProjection)
                     .IsAssignableFrom(reg)) eventHandlerSubscriptions
@@ -63,15 +64,15 @@ namespace CranusCommandIssuer
             return publisher;
         }
 
-        private class DummyProjection : IProjection,
-        IEventHandler<AccountActivated>
-        {
-            public void Handle(AccountActivated @event)
-            {
-                log.Debug("We are writing in the database");
-                System.Diagnostics.Trace.WriteLine("Implying we are saving in the base");
-            }
-        }
+        //private class DummyProjection : IProjection,
+        //IEventHandler<AccountActivated>
+        //{
+        //    public void Handle(AccountActivated @event)
+        //    {
+        //        log.Debug("We are writing in the database");
+        //        System.Diagnostics.Trace.WriteLine("Implying we are saving in the base");
+        //    }
+        //}
 
         private class ServiceLocator
         {

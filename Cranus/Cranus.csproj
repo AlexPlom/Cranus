@@ -52,8 +52,8 @@
     <Compile Include="Accounts\Commands\ActivateAccount.cs" />
     <Compile Include="Accounts\Events\AccountRegistered.cs" />
     <Compile Include="Accounts\Ports\AccountPort.cs" />
+    <Compile Include="Accounts\Projections\AccountProjection.cs" />
     <Compile Include="BoundedContext.cs" />
-    <Compile Include="Projections\AccountProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

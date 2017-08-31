@@ -21,6 +21,8 @@ namespace CranusCommandIssuer
             publisher.Publish(registerAccount, new Dictionary<string, string>());
             publisher.Publish(deactivateAccount, new Dictionary<string, string>());
             publisher.Publish(activatAccount, new Dictionary<string, string>());
+
+            System.Console.ReadLine();
         }
     }
 }
