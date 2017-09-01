@@ -14,7 +14,7 @@ namespace CranusCommandIssuer
             var accountId = new AccountId("CranusAccount", "tenant");
             var reason = new Reason("A good reason title", "The reason for the modification.");
 
-            var registerAccount = new RegisterAccount(accountId, "username", "password", "cranus@gmail.com");
+            var registerAccount = new RegisterAccount(accountId, "mynkow", "password", "cranus@gmail.com");
 
             var deactivateAccount = new DeactivateАccount(accountId, reason);
             var activatAccount = new ActivateAccount(accountId, reason);

@@ -64,16 +64,6 @@ namespace CranusCommandIssuer
             return publisher;
         }
 
-        //private class DummyProjection : IProjection,
-        //IEventHandler<AccountActivated>
-        //{
-        //    public void Handle(AccountActivated @event)
-        //    {
-        //        log.Debug("We are writing in the database");
-        //        System.Diagnostics.Trace.WriteLine("Implying we are saving in the base");
-        //    }
-        //}
-
         private class ServiceLocator
         {
             private IContainer container;
