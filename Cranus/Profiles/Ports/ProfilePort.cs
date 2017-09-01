@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Cranus.Profiles.Ports
 {
     public class ProfilePort : IPort,
-     IEventHandler<AccountRegistered>
+        IEventHandler<AccountRegistered>
     {
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
