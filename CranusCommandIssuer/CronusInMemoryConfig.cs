@@ -1,7 +1,11 @@
 ﻿using Cranus;
+using Cranus.Accounts.Commands;
 using Cranus.Accounts.Events;
 using Cranus.Accounts.Projections;
+using Cranus.Profiles.Commands;
+using Cranus.Profiles.Ports;
 using CranusCommandIssuer.Logging;
+using Elders.Cronus;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.Cluster.Config;
@@ -32,7 +36,13 @@ namespace CranusCommandIssuer
             var factory = new DefaultHandlerFactory(x => serviceLocator.Resolve(x));
             settings.UseCluster(x => x.UseAggregateRootAtomicAction(y => y.WithInMemory()));
 
+
+
+            //settings.UseContractsFromAssemblies(new Assembly[] { Assembly.GetAssembly(typeof(RegisterAccount)), Assembly.GetAssembly(typeof(CreateProfile)) })
+            //    .UsePortConsumer(consumable => consumable
+            //        .UsePorts(c => c.RegisterAllHandlersInAssembly(Assembly.GetAssembly(typeof(AccountProjection)), COLL_POOOOORTHandlerFactory.Create)));
             ((ICronusSettings)settings).Build();
+
 
             var host = container.Resolve<CronusHost>();
             host.Start();
@@ -41,8 +51,8 @@ namespace CranusCommandIssuer
 
             container.RegisterSingleton(() => new InMemoryEventStoreStorage());
 
-            var projectionsMiddleware = new ProjectionsMiddleware(factory);
             var eventHandlerSubscriptions = new SubscriptionMiddleware();
+            var projectionsMiddleware = new ProjectionsMiddleware(factory);
             foreach (var reg in typeof(AccountProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
             {
                 if (typeof(IProjection)
@@ -60,6 +70,16 @@ namespace CranusCommandIssuer
             }
 
             InMemoryPublisher<ICommand> publisher = new InMemoryPublisher<ICommand>(applicationServiceSubscriptions);
+
+
+            var portsSubscriptions = new SubscriptionMiddleware();
+            var portsMiddleware = new PortsMiddleware(factory, publisher);
+            foreach (var reg in typeof(ProfilePort).Assembly.GetTypes().Where(x => typeof(IPort).IsAssignableFrom(x)))
+            {
+                if (typeof(IPort)
+                    .IsAssignableFrom(reg)) portsSubscriptions
+                        .Subscribe(new HandleSubscriber<IPort, IEventHandler<IEvent>>(reg, portsMiddleware));
+            }
 
             return publisher;
         }
@@ -112,6 +132,26 @@ namespace CranusCommandIssuer
                     subscriber.Process(cronusMessage);
                 }
                 return true;
+            }
+        }
+
+        public class PortHandlerFactory
+        {
+            private readonly IContainer container;
+            private readonly string namedInstance;
+
+            public PortHandlerFactory(IContainer container, string namedInstance)
+            {
+                this.container = container;
+                this.namedInstance = namedInstance;
+            }
+
+            public object Create(Type handlerType)
+            {
+                var handler = FastActivator
+                    .CreateInstance(handlerType)
+                    .AssignPropertySafely<IPort>(x => x.CommandPublisher = container.Resolve<IPublisher<ICommand>>(namedInstance));
+                return handler;
             }
         }
     }

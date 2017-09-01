@@ -10,7 +10,6 @@ namespace Cranus.Accounts.Projections
         {
             var account = new DTOs.Account()
             {
-
                 Email = message.Email,
                 Username = message.Username
             };

@@ -16,11 +16,11 @@ namespace CranusCommandIssuer
 
             var registerAccount = new RegisterAccount(accountId, "mynkow", "password", "cranus@gmail.com");
 
-            var deactivateAccount = new DeactivateАccount(accountId, reason);
-            var activatAccount = new ActivateAccount(accountId, reason);
+            //var deactivateAccount = new DeactivateАccount(accountId, reason);
+            //var activatAccount = new ActivateAccount(accountId, reason);
             publisher.Publish(registerAccount, new Dictionary<string, string>());
-            publisher.Publish(deactivateAccount, new Dictionary<string, string>());
-            publisher.Publish(activatAccount, new Dictionary<string, string>());
+            //publisher.Publish(deactivateAccount, new Dictionary<string, string>());
+            //publisher.Publish(activatAccount, new Dictionary<string, string>());
 
             System.Console.ReadLine();
         }
