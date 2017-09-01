@@ -1,9 +1,10 @@
-﻿using Cranus.Accounts.Events;
-using Cranus.Profiles.Commands;
+﻿using Cranus.Collaboration.Contracts.Profiles;
+using Cranus.Collaboration.Contracts.Profiles.Commands;
+using Cranus.IdentityAndAccess.Contracts.Accounts.Events;
 using Elders.Cronus.DomainModeling;
 using System;
 
-namespace Cranus.Profiles.Ports
+namespace Cranus.Collaboration.Handlers.Profiles.Ports
 {
     public class ProfilePort : IPort,
         IEventHandler<AccountRegistered>

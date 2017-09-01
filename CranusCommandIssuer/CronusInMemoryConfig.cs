@@ -1,8 +1,4 @@
-﻿using Cranus;
-using Cranus.Accounts.Projections;
-using Cranus.Profiles.Ports;
-using CranusCommandIssuer.Logging;
-using Elders.Cronus;
+﻿using Elders.Cronus;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.Cluster.Config;
@@ -17,6 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Cranus.Collaboration.Handlers.Profiles.Projections;
+using Cranus.Collaboration.Handlers.Profiles.Ports;
+using Cranus.IdentityAndAccess.Accounts;
+using CranusCommandIssuer.Logging;
 
 namespace CranusCommandIssuer
 {
@@ -45,7 +45,7 @@ namespace CranusCommandIssuer
             //Projections
             var eventHandlerSubscriptions = new SubscriptionMiddleware();
             var projectionsMiddleware = new ProjectionsMiddleware(factory);
-            foreach (var reg in typeof(AccountProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
+            foreach (var reg in typeof(ProfileProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
             {
                 if (typeof(IProjection)
                     .IsAssignableFrom(reg)) eventHandlerSubscriptions
@@ -53,7 +53,6 @@ namespace CranusCommandIssuer
             }
 
             //Ports
-            //var portsSubscriptions = new SubscriptionMiddleware();
             var portsMiddleware = new PortsMiddleware(factory, new InMemoryPublisher<ICommand>(eventHandlerSubscriptions));
             foreach (var reg in typeof(ProfilePort).Assembly.GetTypes().Where(x => typeof(IPort).IsAssignableFrom(x)))
             {
@@ -73,7 +72,6 @@ namespace CranusCommandIssuer
             }
 
             InMemoryPublisher<ICommand> publisher = new InMemoryPublisher<ICommand>(applicationServiceSubscriptions);
-
 
             return publisher;
         }

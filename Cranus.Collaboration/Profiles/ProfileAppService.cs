@@ -1,7 +1,7 @@
-﻿using Cranus.Profiles.Commands;
+﻿using Cranus.Collaboration.Contracts.Profiles.Commands;
 using Elders.Cronus.DomainModeling;
 
-namespace Cranus.Profiles
+namespace Cranus.Collaboration.Profiles
 {
     public class ProfileAppService : AggregateRootApplicationService<Profile>,
         ICommandHandler<CreateProfile>,
