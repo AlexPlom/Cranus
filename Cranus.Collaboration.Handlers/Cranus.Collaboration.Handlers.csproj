@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{592D6A5C-F6D5-46DE-AF42-5A49281BBD2B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>CranusCommandIssuer</RootNamespace>
-    <AssemblyName>CranusCommandIssuer</AssemblyName>
+    <ProjectGuid>{C41E5CC6-8E44-47B1-98FE-74ED70F2982D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cranus.Collaboration.Handlers</RootNamespace>
+    <AssemblyName>Cranus.Collaboration.Handlers</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,52 +30,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.3.0.3\lib\net45-full\Elders.Cronus.dll</HintPath>
-    </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.DomainModeling.3.2.2\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Multithreading.Scheduler, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Multithreading.Scheduler.1.1.1\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="CronusInMemoryConfig.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Profiles\DTOs\Profile.cs" />
+    <Compile Include="Profiles\Ports\ProfilePort.cs" />
+    <Compile Include="Profiles\Projections\ProfileProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cranus.Collaboration.Contracts\Cranus.Collaboration.Contracts.csproj">
-      <Project>{06e3839d-86d3-494c-a204-7c55c763c29c}</Project>
+      <Project>{06E3839D-86D3-494C-A204-7C55C763C29C}</Project>
       <Name>Cranus.Collaboration.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cranus.Collaboration.Handlers\Cranus.Collaboration.Handlers.csproj">
-      <Project>{c41e5cc6-8e44-47b1-98fe-74ed70f2982d}</Project>
-      <Name>Cranus.Collaboration.Handlers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cranus.Collaboration\Cranus.Collaboration.csproj">
-      <Project>{5ddae0e2-80cb-4cd3-aa7d-c6791b595c25}</Project>
-      <Name>Cranus.Collaboration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cranus.IdentityAndAccess.Contracts\Cranus.IdentityAndAccess.Contracts.csproj">
-      <Project>{f31d3b9b-c182-41d7-b496-f4df8bb20a0f}</Project>
+      <Project>{F31D3B9B-C182-41D7-B496-F4DF8BB20A0F}</Project>
       <Name>Cranus.IdentityAndAccess.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cranus.IdentityAndAccess\Cranus.IdentityAndAccess.csproj">
-      <Project>{8c4c547c-1365-4722-9c31-3204f28ad822}</Project>
-      <Name>Cranus.IdentityAndAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
