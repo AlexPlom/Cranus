@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cranus", "Cranus\Cranus.csproj", "{3AE27613-2E7C-4D10-AF1A-EC59218F5C67}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CranusCommandIssuer", "CranusCommandIssuer\CranusCommandIssuer.csproj", "{592D6A5C-F6D5-46DE-AF42-5A49281BBD2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cranus.IdentityAndAccess", "Cranus.IdentityAndAccess\Cranus.IdentityAndAccess.csproj", "{8C4C547C-1365-4722-9C31-3204F28AD822}"
@@ -23,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3AE27613-2E7C-4D10-AF1A-EC59218F5C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AE27613-2E7C-4D10-AF1A-EC59218F5C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AE27613-2E7C-4D10-AF1A-EC59218F5C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AE27613-2E7C-4D10-AF1A-EC59218F5C67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{592D6A5C-F6D5-46DE-AF42-5A49281BBD2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{592D6A5C-F6D5-46DE-AF42-5A49281BBD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{592D6A5C-F6D5-46DE-AF42-5A49281BBD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -14,6 +14,7 @@ namespace CranusCommandIssuer
             var accountId = new AccountId("CranusAccount", "tenant");
             var registerAccount = new RegisterAccount(accountId, "Username", "password", "cranus@gmail.com");
 
+
             publisher.Publish(registerAccount, new Dictionary<string, string>());
         }
     }
