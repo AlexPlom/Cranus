@@ -1,6 +1,4 @@
-﻿using Cranus;
-using Cranus.Accounts.Events;
-using CranusCommandIssuer.Logging;
+﻿using Elders.Cronus;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.Cluster.Config;
@@ -15,6 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Cranus.Collaboration.Handlers.Profiles.Projections;
+using Cranus.Collaboration.Handlers.Profiles.Ports;
+using Cranus.IdentityAndAccess.Accounts;
+using CranusCommandIssuer.Logging;
 
 namespace CranusCommandIssuer
 {
@@ -40,15 +42,26 @@ namespace CranusCommandIssuer
 
             container.RegisterSingleton(() => new InMemoryEventStoreStorage());
 
-            var projectionsMiddleware = new ProjectionsMiddleware(factory);
+            //Projections
             var eventHandlerSubscriptions = new SubscriptionMiddleware();
-            foreach (var reg in typeof(DummyProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
+            var projectionsMiddleware = new ProjectionsMiddleware(factory);
+            foreach (var reg in typeof(ProfileProjection).Assembly.GetTypes().Where(x => typeof(IProjection).IsAssignableFrom(x)))
             {
                 if (typeof(IProjection)
                     .IsAssignableFrom(reg)) eventHandlerSubscriptions
                          .Subscribe(new HandleSubscriber<IProjection, IEventHandler<IEvent>>(reg, projectionsMiddleware));
             }
 
+            //Ports
+            var portsMiddleware = new PortsMiddleware(factory, new InMemoryPublisher<ICommand>(eventHandlerSubscriptions));
+            foreach (var reg in typeof(ProfilePort).Assembly.GetTypes().Where(x => typeof(IPort).IsAssignableFrom(x)))
+            {
+                if (typeof(IPort)
+                    .IsAssignableFrom(reg)) eventHandlerSubscriptions
+                        .Subscribe(new HandleSubscriber<IPort, IEventHandler<IEvent>>(reg, portsMiddleware));
+            }
+
+            //ApplicationServices
             var applicationServiceSubscriptions = new SubscriptionMiddleware();
             var applicationServiceMiddleware = new ApplicationServiceMiddleware(factory, new AggregateRepository(store, container.Resolve<IAggregateRootAtomicAction>(), container.Resolve<IIntegrityPolicy<EventStream>>()), new InMemoryPublisher<IEvent>(eventHandlerSubscriptions));
             foreach (var reg in typeof(Account).Assembly.GetTypes().Where(x => typeof(IAggregateRootApplicationService).IsAssignableFrom(x)))
@@ -61,16 +74,6 @@ namespace CranusCommandIssuer
             InMemoryPublisher<ICommand> publisher = new InMemoryPublisher<ICommand>(applicationServiceSubscriptions);
 
             return publisher;
-        }
-
-        private class DummyProjection : IProjection,
-        IEventHandler<AccountActivated>
-        {
-            public void Handle(AccountActivated @event)
-            {
-                log.Debug("We are writing in the database");
-                System.Diagnostics.Trace.WriteLine("Implying we are saving in the base");
-            }
         }
 
         private class ServiceLocator
@@ -86,7 +89,7 @@ namespace CranusCommandIssuer
 
             public object Resolve(Type objectType)
             {
-                var instance = Elders.Cronus.FastActivator.CreateInstance(objectType);
+                var instance = FastActivator.CreateInstance(objectType);
                 var props = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
                 var dependencies = props.Where(x => container.IsRegistered(x.PropertyType, namedInstance));
                 foreach (var item in dependencies)
@@ -102,7 +105,7 @@ namespace CranusCommandIssuer
             }
         }
 
-        public class InMemoryPublisher<TContract> : Elders.Cronus.Publisher<TContract> where TContract : IMessage
+        public class InMemoryPublisher<TContract> : Publisher<TContract> where TContract : IMessage
         {
             SubscriptionMiddleware subscribtions;
 
@@ -113,7 +116,7 @@ namespace CranusCommandIssuer
 
             protected override bool PublishInternal(TContract message, Dictionary<string, string> messageHeaders)
             {
-                var cronusMessage = new Elders.Cronus.CronusMessage(message, messageHeaders);
+                var cronusMessage = new CronusMessage(message, messageHeaders);
 
                 var subscribers = subscribtions.GetInterestedSubscribers(cronusMessage);
                 foreach (var subscriber in subscribers)

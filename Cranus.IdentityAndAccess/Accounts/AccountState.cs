@@ -1,8 +1,9 @@
-﻿using Cranus.Accounts.Events;
+﻿using Cranus.IdentityAndAccess.Contracts.Accounts;
+using Cranus.IdentityAndAccess.Contracts.Accounts.Events;
 using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
 
-namespace Cranus.Accounts
+namespace Cranus.IdentityAndAccess.Accounts
 {
     [DataContract(Name = "5d89e3b3-ffa6-4a70-9398-6323f0fb4a03")]
     public class AccountState : AggregateRootState<Account, AccountId>

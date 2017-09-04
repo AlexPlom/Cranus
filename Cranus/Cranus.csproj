@@ -51,9 +51,17 @@
     <Compile Include="Accounts\Events\AccountSuspended.cs" />
     <Compile Include="Accounts\Commands\ActivateAccount.cs" />
     <Compile Include="Accounts\Events\AccountRegistered.cs" />
-    <Compile Include="Accounts\Ports\AccountPort.cs" />
+    <Compile Include="Accounts\Projections\AccountProjection.cs" />
     <Compile Include="BoundedContext.cs" />
-    <Compile Include="Projections\AccountProjection.cs" />
+    <Compile Include="Profiles\Commands\ChangeProfileEmail.cs" />
+    <Compile Include="Profiles\Commands\CreateProfile.cs" />
+    <Compile Include="Profiles\Events\ProfileCreated.cs" />
+    <Compile Include="Profiles\Events\ProfileEmailChanged.cs" />
+    <Compile Include="Profiles\Ports\ProfilePort.cs" />
+    <Compile Include="Profiles\Profile.cs" />
+    <Compile Include="Profiles\ProfileAppService.cs" />
+    <Compile Include="Profiles\ProfileId.cs" />
+    <Compile Include="Profiles\ProfileState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

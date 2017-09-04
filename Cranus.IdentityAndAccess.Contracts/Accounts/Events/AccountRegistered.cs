@@ -1,7 +1,7 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
 
-namespace Cranus.Accounts.Events
+namespace Cranus.IdentityAndAccess.Contracts.Accounts.Events
 {
     [DataContract(Name = "8e8a879e-4d05-45be-ac48-26476e870598")]
     public class AccountRegistered : IEvent
@@ -30,7 +30,7 @@ namespace Cranus.Accounts.Events
 
         public override string ToString()
         {
-            return this.ToString($"New account created with email:'{Email}'. {Id}");
+            return this.ToString($"New account created with email:'{Email}'.{Id}");
         }
     }
 }
