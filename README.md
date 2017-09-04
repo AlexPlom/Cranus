@@ -1,7 +1,7 @@
 # Cranus
 
 The Cranus is an In-Memory implementation of a typical CQRS/Event Sourcing flow, using the Cronus framework.
-The aim of this project is to show how the most basic functionalities of the Cronus work, while avoiding any concers about persisting mechanisms and such.
+The aim of this project is to show how the most basic functionalities of the Cronus work, while avoiding any concerns about persisting mechanisms and such.
 ## Installation
 
 + Simply Fork the project.
@@ -39,11 +39,19 @@ An educational entry-level guide to display how you can implement CQRS/Event Sou
 5. After the validation, an **Event** is raised which changes the current **State** of the aggregate.
 
 + *Optional*
-  + You can make a **Projection** to display needed business logic information by implementing the **IProjection**              interface on a class and attach **EventHandlers** to it.
+  + You can make a **Projection** to display needed business logic information by implementing the **IProjection**  
+    interface on a class and attach **EventHandlers** to it.
   + You can make a **Port** to connect two or more different contexts by implementing the IPort interface on a  
     class and attach **EventHandlers** to it.
 
 **For More Information** Go to [Elders/Cronus.](https://github.com/Elders/Cronus)
+
+## Navigation
+
++ .Contracts exposes Commands, Events and the Id for an Aggregate.
++ .Handlers exposes Projections, Ports and DTOs for an Aggregate.
++  A project without any of the above suffixes indicates that it contains the Aggregate, AppService and State.
++ The CommandIssuerProject is the Entry-point to the program where the configuration is set up and commands are issued.
 
 ## Contributing
 
