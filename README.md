@@ -1,10 +1,10 @@
 # Cranus
 
-The Cranus is an In-Memory implementation of a typical CQRS/Event Sourcing flow, using the Cronus framework.
-The aim of this project is to show how the most basic functionalities of the Cronus work, while avoiding any concerns about persisting mechanisms and such.
+The Cranus is an In-Memory implementation of a typical CQRS + Event Sourcing flow, using the Cronus framework.
+The aim of this project is to show how the most basic functionalities of Cronus work, while avoiding any concerns about persistance mechanisms and such.
 ## Installation
 
-+ Simply Fork the project.
++ Simply Clone the project.
 
 ## Usage
 
